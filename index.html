@@ -43,6 +43,23 @@ button { cursor: pointer; margin-top: 10px; }
   <label>Analysis</label>
   <textarea id="analysis" placeholder="Scientific interpretation of results and their significance"></textarea>
 
+<script>
+// Auto-resize function
+function autoResizeTextarea(textarea) {
+  textarea.style.height = 'auto';                     // reset height
+  textarea.style.height = textarea.scrollHeight + 'px'; // expand to fit content
+}
+
+// Apply to all 3 textareas
+const textareas = ['goal', 'observations', 'analysis'];
+textareas.forEach(id => {
+  const ta = document.getElementById(id);
+  ta.style.overflowY = 'hidden'; // hide scrollbar
+  ta.addEventListener('input', () => autoResizeTextarea(ta));
+  autoResizeTextarea(ta); // set initial height
+});
+</script>
+
   <label>Approved By</label>
   <input type="text" id="approved" placeholder="@Approver">
 </div>
