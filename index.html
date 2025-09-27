@@ -4,71 +4,21 @@
   <meta charset="UTF-8">
   <title>SCP Test Generator</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #111;
-      color: #eee;
-      padding: 20px;
-    }
-    h1, h2 {
-      color: #fff;
-    }
-    label {
-      display: block;
-      margin-top: 10px;
-      font-weight: bold;
-    }
-    input, textarea, button {
-      margin-top: 5px;
-      padding: 8px;
-      width: 100%;
-      max-width: 600px;
-      border: 1px solid #555;
-      border-radius: 4px;
-      background: #222;
-      color: #eee;
-    }
-    button {
-      cursor: pointer;
-      margin-top: 15px;
-      background: #333;
-      border: 1px solid #888;
-    }
-    .output {
-      margin-top: 30px;
-      padding: 15px;
-      border: 1px solid #444;
-      border-radius: 6px;
-      background: #1a1a1a;
-      max-width: 800px;
-      white-space: pre-wrap;
-    }
-    .line {
-      margin: 10px 0;
-      padding: 8px;
-      background: #222;
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    .line span {
-      flex: 1;
-      margin-right: 10px;
-    }
-    .copy-btn {
-      background: #444;
-      border: 1px solid #666;
-      padding: 5px 10px;
-      border-radius: 4px;
-      cursor: pointer;
-      color: #eee;
-    }
+    body { font-family: Arial, sans-serif; background: #111; color: #eee; padding: 20px; }
+    h1, h2 { color: #fff; }
+    label { display: block; margin-top: 10px; font-weight: bold; }
+    input, textarea, button { margin-top: 5px; padding: 8px; width: 100%; max-width: 600px; border: 1px solid #555; border-radius: 4px; background: #222; color: #eee; }
+    button { cursor: pointer; margin-top: 15px; background: #333; border: 1px solid #888; }
+    .output { margin-top: 30px; padding: 15px; border: 1px solid #444; border-radius: 6px; background: #1a1a1a; max-width: 800px; white-space: pre-wrap; }
+    .line { margin: 10px 0; padding: 8px; background: #222; border-radius: 4px; display: flex; justify-content: space-between; align-items: center; }
+    .line span { flex: 1; margin-right: 10px; }
+    .copy-btn { background: #444; border: 1px solid #666; padding: 5px 10px; border-radius: 4px; cursor: pointer; color: #eee; }
   </style>
 </head>
 <body>
   <h1>SCP Test Generator</h1>
 
+  <!-- Basic Info -->
   <label for="host">Host</label>
   <input type="text" id="host" placeholder="e.g., @DrSmith">
 
@@ -96,6 +46,23 @@
   <label for="approved">Approved By</label>
   <input type="text" id="approved" placeholder="e.g., @LeadResearcher">
 
+  <!-- Personnel Inputs -->
+  <h2>Personnel</h2>
+  <label for="lead">Lead Researcher</label>
+  <input type="text" id="lead" placeholder="@username">
+
+  <label for="assistants">Assistant Researchers</label>
+  <input type="text" id="assistants" placeholder="@username, @username or N/A">
+
+  <label for="security">Security Department</label>
+  <input type="text" id="security" placeholder="@username, @username, @username">
+
+  <label for="medical">Medical Department</label>
+  <input type="text" id="medical" placeholder="@username or N/A">
+
+  <label for="classd">Class-D Personnel</label>
+  <input type="text" id="classd" placeholder="Number used">
+
   <button onclick="generateAll()">Generate Outputs</button>
 
   <h2>Class-D Script</h2>
@@ -106,9 +73,7 @@
 
   <script>
     function copyLine(text) {
-      navigator.clipboard.writeText(text).then(() => {
-        alert("Copied: " + text);
-      });
+      navigator.clipboard.writeText(text).then(() => { alert("Copied: " + text); });
     }
 
     function generateAll() {
@@ -121,6 +86,17 @@
       const observations = document.getElementById("observations").value || "N/A";
       const analysis = document.getElementById("analysis").value || "N/A";
       const approved = document.getElementById("approved").value || "@Approver";
+
+      // Personnel
+      const lead = document.getElementById("lead").value || "@Lead";
+      const assistants = document.getElementById("assistants").value || "N/A";
+      const security = document.getElementById("security").value || "N/A";
+      const medical = document.getElementById("medical").value || "N/A";
+      const classd = document.getElementById("classd").value || "[Number used]";
+
+      // Get today's date
+      const today = new Date();
+      const dateStr = today.toLocaleDateString('en-GB');
 
       // Class-D Script
       const scriptLines = [
@@ -156,14 +132,14 @@
 `--
 **SCP:** SCP-${scp}
 **Classification:** ${classification}
-**Date:** DD/MM/YY
+**Date:** ${dateStr}
 
 **Personnel:**
-> **Lead Researcher:** ${host}
-> **Assistant Researchers:** N/A
-> **Security Department:** N/A
-> **Medical Department:** N/A
-> **Class-D Personnel:** [Number used]
+> **Lead Researcher:** ${lead}
+> **Assistant Researchers:** ${assistants}
+> **Security Department:** ${security}
+> **Medical Department:** ${medical}
+> **Class-D Personnel:** ${classd}
 > **Other Departments:** N/A
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
