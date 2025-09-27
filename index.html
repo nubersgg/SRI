@@ -43,6 +43,16 @@ button { cursor: pointer; margin-top: 10px; }
   <label>Analysis</label>
   <textarea id="analysis" placeholder="Scientific interpretation of results and their significance"></textarea>
 
+
+<style>
+/* Make textarea full width */
+textarea {
+  width: 100%;           /* take full width of container */
+  box-sizing: border-box; /* include padding and border in width */
+  min-height: 100px;      /* initial height */
+  overflow-y: hidden;     /* hide scrollbar (for auto-resize) */
+}
+</style>
 <script>
 // Auto-resize function
 function autoResizeTextarea(textarea) {
