@@ -52,13 +52,13 @@
   <input type="text" id="lead" placeholder="@username">
 
   <label for="assistants">Assistant Researchers</label>
-  <input type="text" id="assistants" placeholder="@username, @username or N/A">
+  <input type="text" id="assistants" placeholder="username, username or N/A">
 
   <label for="security">Security Department</label>
-  <input type="text" id="security" placeholder="@username, @username, @username">
+  <input type="text" id="security" placeholder="username, username, @username">
 
   <label for="medical">Medical Department</label>
-  <input type="text" id="medical" placeholder="@username or N/A">
+  <input type="text" id="medical" placeholder="username or N/A">
 
   <label for="classd">Class-D Personnel</label>
   <input type="text" id="classd" placeholder="Number used">
@@ -70,8 +70,6 @@
 
   <h2>Full SCP Log</h2>
   <div id="logOutput" class="output" style="display:none;"></div>
-
-  // ... (same as before up to personnel inputs)
 
 <script>
   function copyLine(text) {
@@ -147,7 +145,6 @@
 > **Security Department:** ${security}
 > **Medical Department:** ${medical}
 > **Class-D Personnel:** ${classd}
-> **Other Departments:** N/A
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
 **Testing Objective:**
