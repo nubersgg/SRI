@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Class-D Script Generator</title>
+  <title>SCP Test Generator</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -10,7 +10,7 @@
       color: #eee;
       padding: 20px;
     }
-    h1 {
+    h1, h2 {
       color: #fff;
     }
     label {
@@ -22,7 +22,7 @@
       margin-top: 5px;
       padding: 8px;
       width: 100%;
-      max-width: 500px;
+      max-width: 600px;
       border: 1px solid #555;
       border-radius: 4px;
       background: #222;
@@ -40,7 +40,8 @@
       border: 1px solid #444;
       border-radius: 6px;
       background: #1a1a1a;
-      max-width: 600px;
+      max-width: 800px;
+      white-space: pre-wrap;
     }
     .line {
       margin: 10px 0;
@@ -66,17 +67,42 @@
   </style>
 </head>
 <body>
-  <h1>Class-D Script Generator</h1>
+  <h1>SCP Test Generator</h1>
+
+  <label for="host">Host</label>
+  <input type="text" id="host" placeholder="e.g., @DrSmith">
 
   <label for="scp">SCP Number</label>
   <input type="text" id="scp" placeholder="e.g., 096">
 
-  <label for="goal">Testing Goal</label>
+  <label for="class">Classification</label>
+  <input type="text" id="class" placeholder="e.g., KETER">
+
+  <label for="goal">Testing Objective</label>
   <textarea id="goal" placeholder="Clearly state the purpose and goals of the test"></textarea>
 
-  <button onclick="generateScript()">Generate Script</button>
+  <label for="materials">Materials Used</label>
+  <textarea id="materials" placeholder="List equipment, tools, and resources utilized"></textarea>
 
-  <div id="output" class="output" style="display:none;"></div>
+  <label for="timeline">Testing Timeline</label>
+  <textarea id="timeline" placeholder="1. First step taken&#10;2. Second step taken&#10;3. Continue as needed"></textarea>
+
+  <label for="observations">Observations & Results</label>
+  <textarea id="observations" placeholder="Detailed account of what was observed during testing"></textarea>
+
+  <label for="analysis">Analysis</label>
+  <textarea id="analysis" placeholder="Scientific interpretation of results and their significance"></textarea>
+
+  <label for="approved">Approved By</label>
+  <input type="text" id="approved" placeholder="e.g., @LeadResearcher">
+
+  <button onclick="generateAll()">Generate Outputs</button>
+
+  <h2>Class-D Script</h2>
+  <div id="scriptOutput" class="output" style="display:none;"></div>
+
+  <h2>Full SCP Log</h2>
+  <div id="logOutput" class="output" style="display:none;"></div>
 
   <script>
     function copyLine(text) {
@@ -85,11 +111,19 @@
       });
     }
 
-    function generateScript() {
+    function generateAll() {
+      const host = document.getElementById("host").value || "@Host";
       const scp = document.getElementById("scp").value || "###";
+      const classification = document.getElementById("class").value || "Unclassified";
       const goal = document.getElementById("goal").value || "[goal not specified]";
+      const materials = document.getElementById("materials").value || "N/A";
+      const timeline = document.getElementById("timeline").value || "N/A";
+      const observations = document.getElementById("observations").value || "N/A";
+      const analysis = document.getElementById("analysis").value || "N/A";
+      const approved = document.getElementById("approved").value || "@Approver";
 
-      const lines = [
+      // Class-D Script
+      const scriptLines = [
         `Hello Class-Ds. We will be testing on SCP-${scp}. Please line up.`,
         `The goal of today’s test is to ${goal}.`,
         `Security personnel will ensure your safety, provided you comply with all instructions.`,
@@ -97,9 +131,9 @@
         `Do you understand?`
       ];
 
-      const outputDiv = document.getElementById("output");
-      outputDiv.innerHTML = "";
-      lines.forEach(line => {
+      const scriptDiv = document.getElementById("scriptOutput");
+      scriptDiv.innerHTML = "";
+      scriptLines.forEach(line => {
         const div = document.createElement("div");
         div.className = "line";
 
@@ -113,10 +147,50 @@
 
         div.appendChild(span);
         div.appendChild(button);
-        outputDiv.appendChild(div);
+        scriptDiv.appendChild(div);
       });
+      scriptDiv.style.display = "block";
 
-      outputDiv.style.display = "block";
+      // SCP Log
+      const logText = 
+`--
+**SCP:** SCP-${scp}
+**Classification:** ${classification}
+**Date:** DD/MM/YY
+
+**Personnel:**
+> **Lead Researcher:** ${host}
+> **Assistant Researchers:** N/A
+> **Security Department:** N/A
+> **Medical Department:** N/A
+> **Class-D Personnel:** [Number used]
+> **Other Departments:** N/A
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+**Testing Objective:**
+> ${goal}
+
+**Materials Used:**
+> ${materials}
+
+**Testing Timeline:**
+> ${timeline}
+
+**Observations & Results:**
+> ${observations}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+**Analysis:**
+> ${analysis}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+**Approved By:** ${approved}
+**Logged By:** ${host}
+--`;
+
+      const logDiv = document.getElementById("logOutput");
+      logDiv.textContent = logText;
+      logDiv.style.display = "block";
     }
   </script>
 </body>
