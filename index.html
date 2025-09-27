@@ -71,64 +71,71 @@
   <h2>Full SCP Log</h2>
   <div id="logOutput" class="output" style="display:none;"></div>
 
-  <script>
-    function copyLine(text) {
-      navigator.clipboard.writeText(text).then(() => { alert("Copied: " + text); });
-    }
+  // ... (same as before up to personnel inputs)
 
-    function generateAll() {
-      const host = document.getElementById("host").value || "@Host";
-      const scp = document.getElementById("scp").value || "###";
-      const classification = document.getElementById("class").value || "Unclassified";
-      const goal = document.getElementById("goal").value || "[goal not specified]";
-      const materials = document.getElementById("materials").value || "N/A";
-      const timeline = document.getElementById("timeline").value || "N/A";
-      const observations = document.getElementById("observations").value || "N/A";
-      const analysis = document.getElementById("analysis").value || "N/A";
-      const approved = document.getElementById("approved").value || "@Approver";
+<script>
+  function copyLine(text) {
+    navigator.clipboard.writeText(text).then(() => { alert("Copied: " + text); });
+  }
 
-      // Personnel
-      const lead = document.getElementById("lead").value || "@Lead";
-      const assistants = document.getElementById("assistants").value || "N/A";
-      const security = document.getElementById("security").value || "N/A";
-      const medical = document.getElementById("medical").value || "N/A";
-      const classd = document.getElementById("classd").value || "[Number used]";
+  function formatPersonnel(input) {
+    const trimmed = input.trim();
+    return trimmed === "" ? "N/A" : trimmed;
+  }
 
-      // Get today's date
-      const today = new Date();
-      const dateStr = today.toLocaleDateString('en-GB');
+  function generateAll() {
+    const host = formatPersonnel(document.getElementById("host").value);
+    const scp = document.getElementById("scp").value || "###";
+    const classification = document.getElementById("class").value || "Unclassified";
+    const goal = document.getElementById("goal").value || "[goal not specified]";
+    const materials = document.getElementById("materials").value || "N/A";
+    const timeline = document.getElementById("timeline").value || "N/A";
+    const observations = document.getElementById("observations").value || "N/A";
+    const analysis = document.getElementById("analysis").value || "N/A";
+    const approved = formatPersonnel(document.getElementById("approved").value);
 
-      // Class-D Script
-      const scriptLines = [
-        `Hello Class-Ds. We will be testing on SCP-${scp}. Please line up.`,
-        `The goal of today’s test is to ${goal}.`,
-        `Security personnel will ensure your safety, provided you comply with all instructions.`,
-        `Any deviation or failure to cooperate will result in immediate termination.`,
-        `Do you understand?`
-      ];
+    // Personnel
+    const lead = formatPersonnel(document.getElementById("lead").value);
+    const assistants = formatPersonnel(document.getElementById("assistants").value);
+    const security = formatPersonnel(document.getElementById("security").value);
+    const medical = formatPersonnel(document.getElementById("medical").value);
+    const classd = formatPersonnel(document.getElementById("classd").value);
 
-      const scriptDiv = document.getElementById("scriptOutput");
-      scriptDiv.innerHTML = "";
-      scriptLines.forEach(line => {
-        const div = document.createElement("div");
-        div.className = "line";
+    // Get today's date
+    const today = new Date();
+    const dateStr = today.toLocaleDateString('en-GB');
 
-        const span = document.createElement("span");
-        span.textContent = line;
+    // Class-D Script
+    const scriptLines = [
+      `Hello Class-Ds. We will be testing on SCP-${scp}. Please line up.`,
+      `The goal of today’s test is to ${goal}.`,
+      `Security personnel will ensure your safety, provided you comply with all instructions.`,
+      `Any deviation or failure to cooperate will result in immediate termination.`,
+      `Do you understand?`
+    ];
 
-        const button = document.createElement("button");
-        button.className = "copy-btn";
-        button.textContent = "Copy";
-        button.onclick = () => copyLine(line);
+    const scriptDiv = document.getElementById("scriptOutput");
+    scriptDiv.innerHTML = "";
+    scriptLines.forEach(line => {
+      const div = document.createElement("div");
+      div.className = "line";
 
-        div.appendChild(span);
-        div.appendChild(button);
-        scriptDiv.appendChild(div);
-      });
-      scriptDiv.style.display = "block";
+      const span = document.createElement("span");
+      span.textContent = line;
 
-      // SCP Log
-      const logText = 
+      const button = document.createElement("button");
+      button.className = "copy-btn";
+      button.textContent = "Copy";
+      button.onclick = () => copyLine(line);
+
+      div.appendChild(span);
+      div.appendChild(button);
+      scriptDiv.appendChild(div);
+    });
+    scriptDiv.style.display = "block";
+
+    // SCP Log
+    const logText = 
 `--
 **SCP:** SCP-${scp}
 **Classification:** ${classification}
@@ -164,10 +171,11 @@
 **Logged By:** ${host}
 --`;
 
-      const logDiv = document.getElementById("logOutput");
-      logDiv.textContent = logText;
-      logDiv.style.display = "block";
-    }
-  </script>
+    const logDiv = document.getElementById("logOutput");
+    logDiv.textContent = logText;
+    logDiv.style.display = "block";
+  }
+</script>
+
 </body>
 </html>
