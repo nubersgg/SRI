@@ -71,7 +71,11 @@ textarea { width: 100%; box-sizing: border-box; min-height:35px; overflow-y:hidd
 <label>Class-D Personnel</label>
 <div id="classdContainer"></div>
 </div>
-
+  
+<label>Mobile Task Force</label>
+<div id="MTFContainer"></div>
+</div>
+  
 <!-- Timeline -->
 <div class="section">
 <h2>Testing Timeline</h2>
@@ -143,7 +147,7 @@ function createDynamicInput(containerId, prefix=""){
   }
   addInput(); // start with one box
 }
-["assistantsContainer","securityContainer","medicalContainer","classdContainer"].forEach(id=>createDynamicInput(id));
+["assistantsContainer","securityContainer","medicalContainer","classdContainer","MTFContainer"].forEach(id=>createDynamicInput(id));
 
 // Collect personnel
 function collectInputs(containerId,prefix=""){
@@ -176,6 +180,7 @@ function generateAll(){
   const security=collectInputs("securityContainer");
   const medical=collectInputs("medicalContainer");
   const classd=collectInputs("classdContainer","CD");
+  const mobiletaskforce=collectInputs("MTFContainer");
   const materials=getSelectedMaterials();
 
   // timeline
@@ -217,6 +222,7 @@ function generateAll(){
 > **Security Department:** ${security}
 > **Medical Department:** ${medical}
 > **Class-D Personnel:** ${classd}
+> **Class-D Personnel:** ${mobiletaskforce}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
 **Testing Objective:**
