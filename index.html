@@ -95,16 +95,15 @@ textarea { width: 100%; box-sizing: border-box; min-height:35px; overflow-y:hidd
 
 <script>
 // Tab rename
-const tabEl = document.getElementById('tabName');
-tabEl.addEventListener('keydown', e=>{ if(e.key==='Enter'){ document.title = tabEl.value || 'SCP Test Generator'; tabEl.blur(); }});
+document.getElementById('tabName').addEventListener('keydown', function(e){
+  if(e.key==='Enter'){ document.title = this.value || 'SCP Test Generator'; this.blur(); }
+});
 
 // Auto-resize textareas
 ['goal','observations','analysis'].forEach(id=>{
   const ta=document.getElementById(id);
-  ta.style.overflowY='hidden';
-  const resize=()=>{ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px';};
-  ta.addEventListener('input', resize);
-  resize();
+  ta.addEventListener('input', ()=>{ ta.style.height='auto'; ta.style.height=ta.scrollHeight+'px'; });
+  ta.style.height=ta.scrollHeight+'px';
 });
 
 // Timeline step
@@ -118,9 +117,9 @@ function addTimelineStep(value=""){
   };
   div.appendChild(input); timelineContainer.appendChild(div); input.focus();
 }
-addTimelineStep();
+addTimelineStep(); // start with one step
 
-// Materials
+// Materials buttons
 const materialsList=["Handcuffs","Bandages","Mop","714","034","517","207","178","860","310","035","093","701"];
 const materialsContainer=document.getElementById("materialsContainer");
 materialsList.forEach(item=>{
@@ -130,7 +129,7 @@ materialsList.forEach(item=>{
 });
 function getSelectedMaterials(){const selected=[]; document.querySelectorAll("#materialsContainer button.selected").forEach(b=>selected.push(b.textContent)); return selected.length>0?selected.join(", "):"N/A";}
 
-// Dynamic personnel inputs
+// Dynamic Personnel (timeline-style inputs)
 function createDynamicInput(containerId, prefix=""){
   const container=document.getElementById(containerId);
   function addInput(value=""){
@@ -142,9 +141,8 @@ function createDynamicInput(containerId, prefix=""){
     };
     div.appendChild(input); container.appendChild(div); input.focus();
   }
-  addInput();
+  addInput(); // start with one box
 }
-
 ["assistantsContainer","securityContainer","medicalContainer","classdContainer"].forEach(id=>createDynamicInput(id));
 
 // Collect personnel
@@ -157,7 +155,7 @@ function collectInputs(containerId,prefix=""){
       else list.push(inp.value.trim());
     }
   });
-  return list.length>0?list.join(", "):"N/A";
+  return list.length>0?list.join(", ") : "N/A";
 }
 
 // Copy helpers
@@ -233,3 +231,18 @@ ${timelineSteps.join("\n")}
 **Observations & Results:**
 > ${observations}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+**Analysis:**
+> ${analysis}
+▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
+
+**Approved By:** ${approved}
+**Logged By:** ${host}
+--`;
+
+  const logDiv=document.getElementById("logOutput");
+  logDiv.textContent=logText; logDiv.style.display="block";
+}
+</script>
+</body>
+</html>
