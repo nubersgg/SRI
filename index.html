@@ -2,9 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>SCP Test Generator</title>
 <link rel="icon" type="image/png" href="favicon.ico">
 <style>
+<div class="section">
+  <label>Save/Tab Name</label>
+  <input id="tabName" type="text" placeholder="Enter tab name and press Enter">
+</div>
+
+<script>
+document.getElementById("tabName").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    document.title = this.value || "SCP Test Generator"; // fallback if empty
+  }
+});
+</script>
 body { font-family: Arial, sans-serif; background: #111; color: #eee; padding: 20px; }
 h1,h2 { color: #fff; }
 label { display: block; margin-top: 10px; font-weight: bold; }
