@@ -6,335 +6,170 @@
 <link rel="icon" type="image/x-icon" href="main/favicon.ico">
 <style>
   body {
+    background: #1e1e1e;
+    color: #e0e0e0;
     font-family: Arial, sans-serif;
-    background: #f3f3f3;
     margin: 0;
     padding: 20px;
   }
-  h1 { text-align: center; }
-  .container {
-    max-width: 1000px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  h1, h2 {
+    color: #76ff76;
   }
-  .section {
+  .row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+  }
+  input, textarea {
+    background: #2b2b2b;
+    color: #fff;
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 8px;
+    flex: 1;
+  }
+  textarea {
+    resize: none;
+    min-height: 60px;
+    width: 100%;
+    overflow-y: hidden;
+  }
+  .box {
+    background: #252525;
+    padding: 15px;
+    border-radius: 8px;
     margin-bottom: 20px;
   }
-  label {
+  .personnel-group label {
     font-weight: bold;
     display: block;
     margin-bottom: 5px;
   }
-  input, textarea, button {
-    font-size: 14px;
-    margin: 5px 0;
-  }
-  input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  textarea {
-    width: 100%;
-    min-height: 80px;
-    resize: none;
-    overflow-y: hidden;
-    padding: 8px;
-    box-sizing: border-box;
-  }
-  .dynamic-inputs input {
+  .personnel-group input {
     display: block;
     margin-bottom: 5px;
+    width: 100%;
   }
-  .output {
-    background: #eee;
-    padding: 10px;
-    border-radius: 6px;
-    white-space: pre-wrap;
-  }
-  .copy-btn {
-    margin-left: 10px;
-    font-size: 12px;
-  }
-  .material-btn {
-    margin: 3px;
+  button.copy {
+    background: #3a3a3a;
+    border: none;
+    color: #76ff76;
     padding: 5px 10px;
-    border: 1px solid #888;
-    border-radius: 6px;
+    margin-top: 5px;
     cursor: pointer;
-    background: #ccc;
-  }
-  .material-btn.selected {
-    background: green;
-    color: white;
+    border-radius: 5px;
   }
 </style>
 </head>
 <body>
-<div class="container">
   <h1>SCP Test Generator</h1>
 
-  <!-- Tab Name -->
-  <div class="section">
-    <label>Save/Tab Name</label>
-    <input id="tabName" type="text" placeholder="Enter tab name and press Enter">
+  <!-- Quick Tab Rename -->
+  <div class="box">
+    <label>Tab Name</label>
+    <input type="text" id="tabName" placeholder="Enter tab name and press Enter">
   </div>
 
-  <!-- Basic Info -->
-  <div class="section">
-    <label>Host</label>
-    <input id="host" type="text" placeholder="@Host">
-
-    <label>SCP</label>
-    <input id="scp" type="text" placeholder="SCP-###">
-
-    <label>Classification</label>
-    <input id="classification" type="text" placeholder="Euclid/Keter/etc">
+  <!-- Top row inputs -->
+  <div class="box row">
+    <input type="text" id="host" placeholder="Host">
+    <input type="text" id="scp" placeholder="SCP (e.g., SCP-096)">
+    <input type="text" id="classification" placeholder="Classification (e.g., KETER)">
   </div>
 
   <!-- Personnel -->
-  <div class="section">
-    <label>Assistant Researchers</label>
-    <div id="assistantResearchers" class="dynamic-inputs"></div>
-    <button onclick="addInput('assistantResearchers')">+ Add</button>
-  </div>
-  <div class="section">
-    <label>Security Department</label>
-    <div id="securityDept" class="dynamic-inputs"></div>
-    <button onclick="addInput('securityDept')">+ Add</button>
-  </div>
-  <div class="section">
-    <label>Medical Department</label>
-    <div id="medicalDept" class="dynamic-inputs"></div>
-    <button onclick="addInput('medicalDept')">+ Add</button>
-  </div>
-  <div class="section">
-    <label>Class-D Personnel</label>
-    <div id="classD" class="dynamic-inputs"></div>
-    <button onclick="addInput('classD', true)">+ Add CD</button>
-  </div>
-  <div class="section">
-    <label>Mobile Task Force</label>
-    <div id="mtf" class="dynamic-inputs"></div>
-    <button onclick="addInput('mtf')">+ Add</button>
-  </div>
+  <div class="box">
+    <h2>Personnel</h2>
 
-  <!-- Testing Objective -->
-  <div class="section">
-    <label>Testing Objective</label>
-    <textarea id="goal" placeholder="Clearly state the purpose and goals of the test"></textarea>
-  </div>
+    <div class="personnel-group" id="assistants">
+      <label>Assistant Researchers</label>
+      <input type="text" placeholder="@username">
+    </div>
 
-  <!-- Materials -->
-  <div class="section">
-    <label>Materials Used</label>
-    <div id="materials">
-      <button class="material-btn" onclick="toggleMaterial(this)">Handcuffs</button>
-      <button class="material-btn" onclick="toggleMaterial(this)">Taser</button>
-      <button class="material-btn" onclick="toggleMaterial(this)">UV Flashlight</button>
-      <button class="material-btn" onclick="toggleMaterial(this)">Lavender</button>
-      <button class="material-btn" onclick="toggleMaterial(this)">Cage</button>
-      <button class="material-btn" onclick="toggleMaterial(this)">Water Gun</button>
-      <button class="material-btn" onclick="toggleMaterial(this)">Flashlight</button>
-      <button class="material-btn" onclick="toggleMaterial(this)">Scrambler Goggles</button>
+    <div class="personnel-group" id="security">
+      <label>Security Department</label>
+      <input type="text" placeholder="@username">
+    </div>
+
+    <div class="personnel-group" id="medical">
+      <label>Medical Department</label>
+      <input type="text" placeholder="@username">
+    </div>
+
+    <div class="personnel-group" id="cd">
+      <label>Class-D Personnel</label>
+      <input type="text" placeholder="@player">
+    </div>
+
+    <div class="personnel-group" id="mtf">
+      <label>Mobile Task Force</label>
+      <input type="text" placeholder="@username">
     </div>
   </div>
 
-  <!-- Timeline -->
-  <div class="section">
-    <label>Testing Timeline</label>
-    <div id="timeline" class="dynamic-inputs"></div>
-    <button onclick="addInput('timeline')">+ Add Step</button>
+  <!-- Script / Log boxes (shortened for demo) -->
+  <div class="box">
+    <h2>Testing Objective</h2>
+    <textarea placeholder="Clearly state the purpose and goals of the test"></textarea>
   </div>
-
-  <!-- Observations -->
-  <div class="section">
-    <label>Observations & Results</label>
-    <textarea id="observations" placeholder="Detailed account of what was observed during testing"></textarea>
+  <div class="box">
+    <h2>Observations & Results</h2>
+    <textarea placeholder="Detailed account of what was observed during testing"></textarea>
   </div>
-
-  <!-- Analysis -->
-  <div class="section">
-    <label>Analysis</label>
-    <textarea id="analysis" placeholder="Scientific interpretation of results and their significance"></textarea>
+  <div class="box">
+    <h2>Analysis</h2>
+    <textarea placeholder="Scientific interpretation of results and their significance"></textarea>
   </div>
-
-  <!-- Approval -->
-  <div class="section">
-    <label>Approved By</label>
-    <input id="approved" type="text" placeholder="@Approver">
-  </div>
-
-  <!-- Generate Buttons -->
-  <div class="section">
-    <button onclick="generateClassD()">Generate Class-D Script</button>
-    <button onclick="generateLog()">Generate SCP Log</button>
-    <button onclick="copyAll()">Copy Full Log</button>
-  </div>
-
-  <!-- Output -->
-  <div class="section">
-    <h3>Class-D Script</h3>
-    <div id="classDOutput" class="output"></div>
-  </div>
-  <div class="section">
-    <h3>Full SCP Log</h3>
-    <div id="logOutput" class="output"></div>
-  </div>
-</div>
 
 <script>
-/* Tab renaming */
-document.getElementById("tabName").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    document.title = this.value || "SCP Test Generator";
+// Tab renaming
+const tabInput = document.getElementById('tabName');
+tabInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    document.title = tabInput.value || 'SCP Test Generator';
+    tabInput.blur();
   }
 });
 
-/* Auto-resize textareas */
-function autoResizeTextarea(textarea) {
-  textarea.style.height = "auto";
-  textarea.style.height = textarea.scrollHeight + "px";
-}
-["goal","observations","analysis"].forEach(id=>{
-  const ta = document.getElementById(id);
-  ta.style.overflowY = "hidden";
-  ta.addEventListener("input",()=>autoResizeTextarea(ta));
-  autoResizeTextarea(ta);
+// Auto-expand textarea
+const textareas = document.querySelectorAll('textarea');
+textareas.forEach(t => {
+  t.addEventListener('input', () => {
+    t.style.height = 'auto';
+    t.style.height = t.scrollHeight + 'px';
+  });
 });
 
-/* Dynamic inputs (timeline + personnel) */
-function addInput(containerId, isClassD=false) {
-  const container = document.getElementById(containerId);
-  const input = document.createElement("input");
-  input.type = "text";
-  if (isClassD) {
-    input.placeholder = "CD" + (container.children.length+1) + " - @player";
-  } else {
-    input.placeholder = "@player";
-  }
-  input.addEventListener("keydown", function(e){
-    if (e.key === "Enter") {
+// Dynamic personnel inputs (Enter = add, Backspace empty = delete)
+function setupDynamicInputs(groupId, prefix) {
+  const group = document.getElementById(groupId);
+  group.addEventListener('keydown', e => {
+    const target = e.target;
+    if (e.key === 'Enter') {
       e.preventDefault();
-      addInput(containerId, isClassD);
-      container.lastChild.focus();
-    }
-    if (e.key === "Backspace" && this.value === "") {
+      const newInput = document.createElement('input');
+      newInput.type = 'text';
+      newInput.placeholder = groupId === 'cd' ? '@player' : '@username';
+      group.appendChild(newInput);
+      newInput.focus();
+      updateCDLabels();
+    } else if (e.key === 'Backspace' && !target.value && group.children.length > 1) {
       e.preventDefault();
-      this.remove();
+      group.removeChild(target);
+      updateCDLabels();
     }
   });
-  container.appendChild(input);
 }
 
-/* Materials toggle */
-function toggleMaterial(btn) {
-  btn.classList.toggle("selected");
-}
-
-/* Copy */
-function copyText(text) {
-  navigator.clipboard.writeText(text);
-}
-
-/* Generate Class-D script */
-function generateClassD() {
-  const scp = document.getElementById("scp").value;
-  const goal = document.getElementById("goal").value;
-  const lines = [
-    `Hello Class-Ds. We will be testing on SCP-${scp}. Please line up.`,
-    ``,
-    `The goal of today’s test is to ${goal}.`,
-    ``,
-    `Security personnel will ensure your safety, provided you comply with all instructions.`,
-    ``,
-    `Any deviation or failure to cooperate will result in immediate termination.`,
-    ``,
-    `Do you understand?`
-  ];
-  let html = "";
-  lines.forEach(line=>{
-    html += `<div>${line} <button class="copy-btn" onclick="copyText('${line.replace(/'/g,"\\'")}')">Copy</button></div>`;
+function updateCDLabels() {
+  const cdGroup = document.getElementById('cd');
+  const inputs = cdGroup.querySelectorAll('input');
+  inputs.forEach((input, i) => {
+    input.dataset.index = i + 1;
   });
-  document.getElementById("classDOutput").innerHTML = html;
 }
 
-/* Generate SCP Log */
-function generateLog() {
-  const host = document.getElementById("host").value;
-  const scp = document.getElementById("scp").value;
-  const classification = document.getElementById("classification").value;
-  const approved = document.getElementById("approved").value;
-  const goal = document.getElementById("goal").value;
-  const observations = document.getElementById("observations").value;
-  const analysis = document.getElementById("analysis").value;
-
-  function collect(containerId, prefix="") {
-    const values = Array.from(document.getElementById(containerId).children)
-      .map((i,idx)=> i.value ? (prefix ? prefix+(idx+1)+"-"+i.value : i.value) : "")
-      .filter(v=>v!=="");
-    return values.length ? values.join(", ") : "N/A";
-  }
-
-  const assistant = collect("assistantResearchers");
-  const security = collect("securityDept");
-  const medical = collect("medicalDept");
-  const classD = collect("classD","CD");
-  const mtf = collect("mtf");
-
-  const timeline = Array.from(document.getElementById("timeline").children)
-    .map((i,idx)=> i.value ? `${idx+1}. ${i.value}` : "")
-    .filter(v=>v!=="")
-    .join("\n> ");
-
-  const materials = Array.from(document.querySelectorAll("#materials .selected"))
-    .map(b=>b.innerText)
-    .join(", ") || "N/A";
-
-  const today = new Date().toLocaleDateString();
-
-  const log = `**SCP:** ${scp}
-**Classification:** ${classification}
-**Date:** ${today}
-
-**Personnel:**
-> **Lead Researcher:** ${host}
-> **Assistant Researchers:** ${assistant}
-> **Security Department:** ${security}
-> **Medical Department:** ${medical}
-> **Class-D Personnel:** ${classD}
-> **Mobile Task Force:** ${mtf}
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-
-**Testing Objective:**
-> ${goal}
-
-**Materials Used:**
-> ${materials}
-
-**Testing Timeline:**
-> ${timeline}
-
-**Observations & Results:**
-> ${observations}
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-**Analysis:**
-> ${analysis}
-▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-**Approved By:** ${approved}
-**Logged By:** ${host}`;
-
-  document.getElementById("logOutput").innerText = log;
-}
-
-/* Copy Full Log */
-function copyAll() {
-  const text = document.getElementById("logOutput").innerText;
-  navigator.clipboard.writeText(text);
-}
+['assistants','security','medical','cd','mtf'].forEach(g => setupDynamicInputs(g));
 </script>
 </body>
 </html>
