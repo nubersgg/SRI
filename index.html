@@ -2,210 +2,311 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<link rel="icon" type="image/png" href="favicon.ico">
+<title>SCP Test Generator</title>
+<link rel="icon" type="image/x-icon" href="main/favicon.ico">
 <style>
-<div class="section">
-  <label>Save/Tab Name</label>
-  <input id="tabName" type="text" placeholder="Enter tab name and press Enter">
-</div>
-
-<script>
-document.getElementById("tabName").addEventListener("keydown", function(e) {
-  if (e.key === "Enter") {
-    document.title = this.value || "SCP Test Generator"; // fallback if empty
+  body {
+    font-family: Arial, sans-serif;
+    background: #f3f3f3;
+    margin: 0;
+    padding: 20px;
   }
-});
-</script>
-body { font-family: Arial, sans-serif; background: #111; color: #eee; padding: 20px; }
-h1,h2 { color: #fff; }
-label { display: block; margin-top: 10px; font-weight: bold; }
-input, textarea, button { margin-top: 5px; padding: 8px; border-radius: 4px; border: 1px solid #555; background: #222; color: #eee; }
-button { cursor: pointer; margin-top: 10px; }
-.section { border:1px solid #555; border-radius:6px; padding:15px; margin-top:15px; background:#1a1a1a; }
-.row { display: flex; gap:10px; flex-wrap: wrap; }
-.row input { flex:1; min-width:100px; }
-.output { margin-top:20px; padding:15px; border:1px solid #444; border-radius:6px; background:#1a1a1a; white-space: pre-wrap; max-width:800px; }
-.line { margin:10px 0; padding:8px; background:#222; border-radius:4px; display:flex; justify-content:space-between; align-items:center; }
-.line span { flex:1; margin-right:10px; }
-.copy-btn { background:#444; border:1px solid #666; padding:5px 10px; border-radius:4px; cursor:pointer; color:#eee; }
-.timeline-step { display:flex; margin-top:5px; }
-.timeline-step input { flex:1; margin-right:5px; }
-.material-btn { margin:5px; background:#444; border:1px solid #666; color:#eee; padding:5px 10px; border-radius:4px; cursor:pointer; }
-.material-btn.selected { background:#28a745; }
+  h1 { text-align: center; }
+  .container {
+    max-width: 1000px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  }
+  .section {
+    margin-bottom: 20px;
+  }
+  label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+  }
+  input, textarea, button {
+    font-size: 14px;
+    margin: 5px 0;
+  }
+  input[type="text"] {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  textarea {
+    width: 100%;
+    min-height: 80px;
+    resize: none;
+    overflow-y: hidden;
+    padding: 8px;
+    box-sizing: border-box;
+  }
+  .dynamic-inputs input {
+    display: block;
+    margin-bottom: 5px;
+  }
+  .output {
+    background: #eee;
+    padding: 10px;
+    border-radius: 6px;
+    white-space: pre-wrap;
+  }
+  .copy-btn {
+    margin-left: 10px;
+    font-size: 12px;
+  }
+  .material-btn {
+    margin: 3px;
+    padding: 5px 10px;
+    border: 1px solid #888;
+    border-radius: 6px;
+    cursor: pointer;
+    background: #ccc;
+  }
+  .material-btn.selected {
+    background: green;
+    color: white;
+  }
 </style>
 </head>
 <body>
-<h1>SCP Test Generator</h1>
+<div class="container">
+  <h1>SCP Test Generator</h1>
 
-<!-- Basic Info Row -->
-<div class="section row">
-  <div style="flex:1;"><label>Host</label><input type="text" id="host" placeholder="@YourName"></div>
-  <div style="flex:1;"><label>SCP Number</label><input type="text" id="scp" placeholder="e.g., 096"></div>
-  <div style="flex:1;"><label>Classification</label><input type="text" id="class" placeholder="e.g., KETER"></div>
+  <!-- Tab Name -->
+  <div class="section">
+    <label>Save/Tab Name</label>
+    <input id="tabName" type="text" placeholder="Enter tab name and press Enter">
+  </div>
+
+  <!-- Basic Info -->
+  <div class="section">
+    <label>Host</label>
+    <input id="host" type="text" placeholder="@Host">
+
+    <label>SCP</label>
+    <input id="scp" type="text" placeholder="SCP-###">
+
+    <label>Classification</label>
+    <input id="classification" type="text" placeholder="Euclid/Keter/etc">
+  </div>
+
+  <!-- Personnel -->
+  <div class="section">
+    <label>Assistant Researchers</label>
+    <div id="assistantResearchers" class="dynamic-inputs"></div>
+    <button onclick="addInput('assistantResearchers')">+ Add</button>
+  </div>
+  <div class="section">
+    <label>Security Department</label>
+    <div id="securityDept" class="dynamic-inputs"></div>
+    <button onclick="addInput('securityDept')">+ Add</button>
+  </div>
+  <div class="section">
+    <label>Medical Department</label>
+    <div id="medicalDept" class="dynamic-inputs"></div>
+    <button onclick="addInput('medicalDept')">+ Add</button>
+  </div>
+  <div class="section">
+    <label>Class-D Personnel</label>
+    <div id="classD" class="dynamic-inputs"></div>
+    <button onclick="addInput('classD', true)">+ Add CD</button>
+  </div>
+  <div class="section">
+    <label>Mobile Task Force</label>
+    <div id="mtf" class="dynamic-inputs"></div>
+    <button onclick="addInput('mtf')">+ Add</button>
+  </div>
+
+  <!-- Testing Objective -->
+  <div class="section">
+    <label>Testing Objective</label>
+    <textarea id="goal" placeholder="Clearly state the purpose and goals of the test"></textarea>
+  </div>
+
+  <!-- Materials -->
+  <div class="section">
+    <label>Materials Used</label>
+    <div id="materials">
+      <button class="material-btn" onclick="toggleMaterial(this)">Handcuffs</button>
+      <button class="material-btn" onclick="toggleMaterial(this)">Taser</button>
+      <button class="material-btn" onclick="toggleMaterial(this)">UV Flashlight</button>
+      <button class="material-btn" onclick="toggleMaterial(this)">Lavender</button>
+      <button class="material-btn" onclick="toggleMaterial(this)">Cage</button>
+      <button class="material-btn" onclick="toggleMaterial(this)">Water Gun</button>
+      <button class="material-btn" onclick="toggleMaterial(this)">Flashlight</button>
+      <button class="material-btn" onclick="toggleMaterial(this)">Scrambler Goggles</button>
+    </div>
+  </div>
+
+  <!-- Timeline -->
+  <div class="section">
+    <label>Testing Timeline</label>
+    <div id="timeline" class="dynamic-inputs"></div>
+    <button onclick="addInput('timeline')">+ Add Step</button>
+  </div>
+
+  <!-- Observations -->
+  <div class="section">
+    <label>Observations & Results</label>
+    <textarea id="observations" placeholder="Detailed account of what was observed during testing"></textarea>
+  </div>
+
+  <!-- Analysis -->
+  <div class="section">
+    <label>Analysis</label>
+    <textarea id="analysis" placeholder="Scientific interpretation of results and their significance"></textarea>
+  </div>
+
+  <!-- Approval -->
+  <div class="section">
+    <label>Approved By</label>
+    <input id="approved" type="text" placeholder="@Approver">
+  </div>
+
+  <!-- Generate Buttons -->
+  <div class="section">
+    <button onclick="generateClassD()">Generate Class-D Script</button>
+    <button onclick="generateLog()">Generate SCP Log</button>
+    <button onclick="copyAll()">Copy Full Log</button>
+  </div>
+
+  <!-- Output -->
+  <div class="section">
+    <h3>Class-D Script</h3>
+    <div id="classDOutput" class="output"></div>
+  </div>
+  <div class="section">
+    <h3>Full SCP Log</h3>
+    <div id="logOutput" class="output"></div>
+  </div>
 </div>
 
-<!-- Testing Objective & Analysis -->
-<div class="section">
-  <label>Testing Objective</label>
-  <textarea id="goal" placeholder="Clearly state the purpose and goals of the test"></textarea>
-
-  <label>Observations & Results</label>
-  <textarea id="observations" placeholder="Detailed account of what was observed during testing"></textarea>
-
-  <label>Analysis</label>
-  <textarea id="analysis" placeholder="Scientific interpretation of results and their significance"></textarea>
-
-
-<style>
-/* Make textarea full width */
-textarea {
-  width: 100%;           /* take full width of container */
-  box-sizing: border-box; /* include padding and border in width */
-  min-height: 35px;      /* initial height */
-  overflow-y: hidden;     /* hide scrollbar (for auto-resize) */
-}
-</style>
 <script>
-// Auto-resize function
+/* Tab renaming */
+document.getElementById("tabName").addEventListener("keydown", function(e) {
+  if (e.key === "Enter") {
+    document.title = this.value || "SCP Test Generator";
+  }
+});
+
+/* Auto-resize textareas */
 function autoResizeTextarea(textarea) {
-  textarea.style.height = 'auto';                     // reset height
-  textarea.style.height = textarea.scrollHeight + 'px'; // expand to fit content
+  textarea.style.height = "auto";
+  textarea.style.height = textarea.scrollHeight + "px";
 }
-
-// Apply to all 3 textareas
-const textareas = ['goal', 'observations', 'analysis'];
-textareas.forEach(id => {
+["goal","observations","analysis"].forEach(id=>{
   const ta = document.getElementById(id);
-  ta.style.overflowY = 'hidden'; // hide scrollbar
-  ta.addEventListener('input', () => autoResizeTextarea(ta));
-  autoResizeTextarea(ta); // set initial height
+  ta.style.overflowY = "hidden";
+  ta.addEventListener("input",()=>autoResizeTextarea(ta));
+  autoResizeTextarea(ta);
 });
-</script>
 
-  <label>Approved By</label>
-  <input type="text" id="approved" placeholder="@Approver">
-</div>
-
-<!-- Personnel -->
-<div class="section">
-<h2>Personnel</h2>
-<label>Assistant Researchers</label>
-<input type="text" id="assistants" placeholder="@username, @username or N/A">
-<label>Security Department</label>
-<input type="text" id="security" placeholder="@username, @username, @username">
-<label>Medical Department</label>
-<input type="text" id="medical" placeholder="@username or N/A">
-<label>Class-D Personnel</label>
-<input type="text" id="classd" placeholder="Number used">
-</div>
-
-<!-- Timeline -->
-<div class="section">
-<h2>Testing Timeline</h2>
-<div id="timelineContainer"></div>
-</div>
-
-<!-- Materials Used -->
-<div class="section">
-<h2>Materials Used</h2>
-<div id="materialsContainer"></div>
-</div>
-
-<button onclick="generateAll()">Generate Outputs</button>
-
-<h2>Class-D Script</h2>
-<div id="scriptOutput" class="output" style="display:none;"></div>
-
-<h2>Full SCP Log</h2>
-<button onclick="copyAllLog()">Copy All SCP Log</button>
-<div id="logOutput" class="output" style="display:none;"></div>
-
-<script>
-const formatPersonnel=input=>input.trim()===""?"N/A":input.trim();
-
-const timelineContainer=document.getElementById("timelineContainer");
-function addTimelineStep(value=""){
-  const div=document.createElement("div"); div.className="timeline-step";
-  const input=document.createElement("input"); input.type="text"; input.value=value; input.placeholder="Step description";
-  input.onkeydown=function(e){
-    if(e.key==="Enter"){ e.preventDefault(); addTimelineStep(); this.blur(); timelineContainer.lastChild.querySelector("input").focus(); }
-    else if(e.key==="Backspace" && this.value===""){ e.preventDefault(); if(timelineContainer.children.length>1){ timelineContainer.removeChild(div); timelineContainer.lastChild.querySelector("input").focus(); }}
-  };
-  div.appendChild(input); timelineContainer.appendChild(div); input.focus();
-}
-addTimelineStep(); // start with one step
-
-// Materials Used
-const materialsList=["Handcuffs", "Bandages", "Mop", "714", "034", "517", "207", "178", "860", "310", "035", "093", "701"];
-const materialsContainer=document.getElementById("materialsContainer");
-materialsList.forEach(item=>{
-  const btn=document.createElement("button"); btn.textContent=item; btn.className="material-btn";
-  btn.onclick=()=>{ btn.classList.toggle("selected"); };
-  materialsContainer.appendChild(btn);
-});
-function getSelectedMaterials(){
-  const selected=[]; document.querySelectorAll("#materialsContainer button.selected").forEach(b=>selected.push(b.textContent));
-  return selected.length>0?selected.join(", "):"N/A";
+/* Dynamic inputs (timeline + personnel) */
+function addInput(containerId, isClassD=false) {
+  const container = document.getElementById(containerId);
+  const input = document.createElement("input");
+  input.type = "text";
+  if (isClassD) {
+    input.placeholder = "CD" + (container.children.length+1) + " - @player";
+  } else {
+    input.placeholder = "@player";
+  }
+  input.addEventListener("keydown", function(e){
+    if (e.key === "Enter") {
+      e.preventDefault();
+      addInput(containerId, isClassD);
+      container.lastChild.focus();
+    }
+    if (e.key === "Backspace" && this.value === "") {
+      e.preventDefault();
+      this.remove();
+    }
+  });
+  container.appendChild(input);
 }
 
-// Copy functions
-function copyLine(text){navigator.clipboard.writeText(text);}
-function copyAllLog(){navigator.clipboard.writeText(document.getElementById("logOutput").textContent);}
+/* Materials toggle */
+function toggleMaterial(btn) {
+  btn.classList.toggle("selected");
+}
 
-// Generate outputs
-function generateAll(){
-  const host=formatPersonnel(document.getElementById("host").value);
-  const scp=document.getElementById("scp").value||"###";
-  const classification=document.getElementById("class").value||"Unclassified";
-  const goal=document.getElementById("goal").value||"[goal not specified]";
-  const observations=document.getElementById("observations").value||"N/A";
-  const analysis=document.getElementById("analysis").value||"N/A";
-  const approved=formatPersonnel(document.getElementById("approved").value);
-  const assistants=formatPersonnel(document.getElementById("assistants").value);
-  const security=formatPersonnel(document.getElementById("security").value);
-  const medical=formatPersonnel(document.getElementById("medical").value);
-  const classd=formatPersonnel(document.getElementById("classd").value);
-  const materials=getSelectedMaterials();
+/* Copy */
+function copyText(text) {
+  navigator.clipboard.writeText(text);
+}
 
-  // timeline steps
-  let timelineSteps=[];
-  timelineContainer.querySelectorAll("input").forEach((inp,i)=>{ if(inp.value.trim()!=="") timelineSteps.push(`> ${i+1}. ${inp.value.trim()}`); });
-  if(timelineSteps.length===0) timelineSteps=["N/A"];
-
-  // date
-  const today=new Date(); const dateStr=today.toLocaleDateString('en-GB');
-
-  // Class-D Script
-  const scriptLines=[
+/* Generate Class-D script */
+function generateClassD() {
+  const scp = document.getElementById("scp").value;
+  const goal = document.getElementById("goal").value;
+  const lines = [
     `Hello Class-Ds. We will be testing on SCP-${scp}. Please line up.`,
+    ``,
     `The goal of today’s test is to ${goal}.`,
+    ``,
     `Security personnel will ensure your safety, provided you comply with all instructions.`,
+    ``,
     `Any deviation or failure to cooperate will result in immediate termination.`,
+    ``,
     `Do you understand?`
   ];
-  const scriptDiv=document.getElementById("scriptOutput");
-  scriptDiv.innerHTML="";
-  scriptLines.forEach(line=>{
-    const div=document.createElement("div"); div.className="line";
-    const span=document.createElement("span"); span.textContent=line;
-    const button=document.createElement("button"); button.className="copy-btn"; button.textContent="Copy"; button.onclick=()=>copyLine(line);
-    div.appendChild(span); div.appendChild(button); scriptDiv.appendChild(div);
+  let html = "";
+  lines.forEach(line=>{
+    html += `<div>${line} <button class="copy-btn" onclick="copyText('${line.replace(/'/g,"\\'")}')">Copy</button></div>`;
   });
-  scriptDiv.style.display="block";
+  document.getElementById("classDOutput").innerHTML = html;
+}
 
-  // SCP Log
-  const logText=
-`--
-**SCP:** SCP-${scp}
+/* Generate SCP Log */
+function generateLog() {
+  const host = document.getElementById("host").value;
+  const scp = document.getElementById("scp").value;
+  const classification = document.getElementById("classification").value;
+  const approved = document.getElementById("approved").value;
+  const goal = document.getElementById("goal").value;
+  const observations = document.getElementById("observations").value;
+  const analysis = document.getElementById("analysis").value;
+
+  function collect(containerId, prefix="") {
+    const values = Array.from(document.getElementById(containerId).children)
+      .map((i,idx)=> i.value ? (prefix ? prefix+(idx+1)+"-"+i.value : i.value) : "")
+      .filter(v=>v!=="");
+    return values.length ? values.join(", ") : "N/A";
+  }
+
+  const assistant = collect("assistantResearchers");
+  const security = collect("securityDept");
+  const medical = collect("medicalDept");
+  const classD = collect("classD","CD");
+  const mtf = collect("mtf");
+
+  const timeline = Array.from(document.getElementById("timeline").children)
+    .map((i,idx)=> i.value ? `${idx+1}. ${i.value}` : "")
+    .filter(v=>v!=="")
+    .join("\n> ");
+
+  const materials = Array.from(document.querySelectorAll("#materials .selected"))
+    .map(b=>b.innerText)
+    .join(", ") || "N/A";
+
+  const today = new Date().toLocaleDateString();
+
+  const log = `**SCP:** ${scp}
 **Classification:** ${classification}
-**Date:** ${dateStr}
+**Date:** ${today}
 
 **Personnel:**
 > **Lead Researcher:** ${host}
-> **Assistant Researchers:** ${assistants}
+> **Assistant Researchers:** ${assistant}
 > **Security Department:** ${security}
 > **Medical Department:** ${medical}
-> **Class-D Personnel:** ${classd}
+> **Class-D Personnel:** ${classD}
+> **Mobile Task Force:** ${mtf}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
 
 **Testing Objective:**
@@ -215,21 +316,24 @@ function generateAll(){
 > ${materials}
 
 **Testing Timeline:**
-${timelineSteps.join("\n")}
+> ${timeline}
 
 **Observations & Results:**
 > ${observations}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-
 **Analysis:**
 > ${analysis}
 ▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬▬
-
 **Approved By:** ${approved}
-**Logged By:** ${host}
---`;
-  const logDiv=document.getElementById("logOutput");
-  logDiv.textContent=logText; logDiv.style.display="block";
+**Logged By:** ${host}`;
+
+  document.getElementById("logOutput").innerText = log;
+}
+
+/* Copy Full Log */
+function copyAll() {
+  const text = document.getElementById("logOutput").innerText;
+  navigator.clipboard.writeText(text);
 }
 </script>
 </body>
