@@ -149,17 +149,19 @@ function createDynamicInput(containerId, prefix=""){
 ["assistantsContainer","securityContainer","medicalContainer","classdContainer","MTFContainer"].forEach(id=>createDynamicInput(id));
 
 // Collect personnel
-function collectInputs(containerId,prefix=""){
-  const inputs=document.querySelectorAll(`#${containerId} input`);
-  const list=[];
-  inputs.forEach((inp,i)=>{
-    if(inp.value.trim()!==""){
-      if(prefix==="CD") list.push(`CD${i+1}-@${inp.value.trim()}`);
-      else list.push(inp.value.trim());
+function collectInputs(containerId, prefix="") {
+  const inputs = document.querySelectorAll(`#${containerId} input`);
+  const list = [];
+  inputs.forEach((inp, i) => {
+    const val = inp.value.trim();
+    if (val !== "") {
+      if (prefix === "CD") list.push(`CD${i+1}-@${val}`);
+      else list.push(`@${val}`); // Add @ for all other teams
     }
   });
-  return list.length>0?list.join(", ") : "N/A";
+  return list.length > 0 ? list.join(", ") : "N/A";
 }
+
 
 // Copy helpers
 function copyLine(text){navigator.clipboard.writeText(text);}
